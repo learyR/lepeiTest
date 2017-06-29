@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.lr.test.MainActivity">
+    <android.support.v7.widget.CardView
+        android:id="@+id/buttoncard"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="#2349f5"
+        app:cardElevation="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="conversionList"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            />
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:layout_below="@+id/buttoncard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="personal"
+        android:textSize="20sp"
+        android:id="@+id/btn_personal"
+        android:textAllCaps="false"
+        />
+  <!--  <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btn_personal"
+        android:layout_above="@+id/rg"
+        >
+    </FrameLayout>-->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btn_personal"
+        android:layout_above="@+id/rg">
+    </android.support.v4.view.ViewPager>
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="#ec0d0c0c"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/btn1"
+            android:button="@null"
+            android:text="首页"
+            android:checked="true"
+            style="@style/menu_item_style"/>
+        <RadioButton
+            android:id="@+id/btn2"
+            android:button="@null"
+            android:text="充值"
+            android:checked="false"
+            style="@style/menu_item_style"/>
+
+        <RadioButton
+            android:id="@+id/btn3"
+            style="@style/menu_item_style"
+            android:button="@null"
+            android:checked="false"
+            android:text="个人中心"/>
+    </RadioGroup>
+
+</RelativeLayout>

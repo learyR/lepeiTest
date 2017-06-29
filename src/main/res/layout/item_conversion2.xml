@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="time"
+        android:layout_gravity="center"
+        />
+    <RelativeLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/a"
+            android:layout_alignParentRight="true"
+            />
+        <TextView
+            android:layout_toLeftOf="@+id/avatar"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/nick"
+            android:layout_marginRight="5dp"
+            android:text="hahah"
+            />
+        <TextView
+            android:id="@+id/text"
+            android:background="@drawable/chatto_bg_focused"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/avatar"
+            android:layout_marginTop="40dp"
+            android:text="你考试情况怎么样啊"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="5dp"
+            android:textColor="#000"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
