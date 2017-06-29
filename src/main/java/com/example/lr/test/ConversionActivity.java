@@ -3,7 +3,6 @@ package com.example.lr.test;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +12,12 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.example.lr.test.adapter.ConversionAdapter;
 import com.example.lr.test.bean.Message;
 import com.example.lr.test.util.ScreenUtil;
+import com.example.lr.test.widget.WrapContentLinearLayoutManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,12 +37,12 @@ public class ConversionActivity extends AppCompatActivity {
     EditText etText;
     ArrayList<Message> mConversionList;
     ConversionAdapter mAdapter;
-    LinearLayoutManager mLayoutManager;
+    WrapContentLinearLayoutManager mLayoutManager;
     Message message;
     String url;
     boolean isSend;
     @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
+    ScrollView srl;
     @BindView(R.id.MyConversition)
     LinearLayout myConversionsition;
 
@@ -85,10 +86,12 @@ public class ConversionActivity extends AppCompatActivity {
         inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         mConversionList = new ArrayList<>();
         mAdapter = new ConversionAdapter(mConversionList, this);
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new WrapContentLinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mLayoutManager.setStackFromEnd(true);
         list.setLayoutManager(mLayoutManager);
         list.setAdapter(mAdapter);
         bottomStatusHeight = ScreenUtil.getBottomStatusHeight(this);
+        controlKeyboardLayout(myConversionsition,srl);
     }
 
     @OnClick(R.id.send)
@@ -99,7 +102,7 @@ public class ConversionActivity extends AppCompatActivity {
         etText.setHint("please write here");
         list.scrollToPosition(mConversionList.size() - 1);
         hideSoftKeyboard();
-        controlKeyboardLayout(myConversionsition,srl);
+
     }
 
     /**
@@ -119,10 +122,10 @@ public class ConversionActivity extends AppCompatActivity {
                 int heightDifference = screenHeight - r.bottom;
                 int recyclerHeight = 0;
                 if (mLayoutManager != null) {
-                    recyclerHeight = mLayoutManager.getHeight();
+                    recyclerHeight = mLayoutManager.getRecyclerHeight();
                 }
                 if (heightDifference == bottomStatusHeight) {
-                    needToScrollView.scrollTo(0, 0);
+                    needToScrollView.scrollTo(0, bottomStatusHeight);
                 } else {
                     if (heightDifference < recyclerHeight) {
                         int contentHeight = mLayoutManager == null ? 0 : mLayoutManager.getHeight();

@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ConversionActivity"
+                  android:windowSoftInputMode="adjustResize|stateHidden"
             >
         </activity>
         <activity android:name=".PersonalActivity">

@@ -8,19 +8,18 @@
     android:background="#cac6c6"
     android:id="@+id/MyConversition"
     tools:context="com.example.lr.test.ConversionActivity">
-    <android.support.v4.widget.SwipeRefreshLayout
+    <ScrollView
         android:id="@+id/srl"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        >
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:descendantFocusability="beforeDescendants"
-            android:fadeScrollbars="false"
             android:id="@+id/list"
             />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </ScrollView>
 
 
     <LinearLayout
