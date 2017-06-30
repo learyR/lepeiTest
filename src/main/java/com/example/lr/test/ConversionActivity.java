@@ -15,13 +15,17 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.example.lr.test.adapter.ConversionAdapter;
-import com.example.lr.test.bean.Message;
+import com.example.lr.test.app.MyTestApplication;
+import com.example.lr.test.entity.DaoSession;
+import com.example.lr.test.entity.Message;
+import com.example.lr.test.entity.MessageDao;
 import com.example.lr.test.util.ScreenUtil;
 import com.example.lr.test.widget.WrapContentLinearLayoutManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -45,6 +49,9 @@ public class ConversionActivity extends AppCompatActivity {
     ScrollView srl;
     @BindView(R.id.MyConversition)
     LinearLayout myConversionsition;
+
+    DaoSession mDaoSession;
+    MessageDao dao;
 
     public int bottomStatusHeight = 0;
     public int listSlideHeight = 0;//滑动距离
@@ -83,6 +90,7 @@ public class ConversionActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        dao = MyTestApplication.getDaoSession().getMessageDao();
         inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         mConversionList = new ArrayList<>();
         mAdapter = new ConversionAdapter(mConversionList, this);
@@ -92,12 +100,17 @@ public class ConversionActivity extends AppCompatActivity {
         list.setAdapter(mAdapter);
         bottomStatusHeight = ScreenUtil.getBottomStatusHeight(this);
         controlKeyboardLayout(myConversionsition,srl);
+        List<Message> messageList = dao.loadAll();
+        if (messageList != null) {
+            mAdapter.addDataList(messageList);
+        }
     }
 
     @OnClick(R.id.send)
     public void onViewClicked() {
         message = new Message();
         initData();
+        dao.insert(message);
         etText.getText().clear();
         etText.setHint("please write here");
         list.scrollToPosition(mConversionList.size() - 1);

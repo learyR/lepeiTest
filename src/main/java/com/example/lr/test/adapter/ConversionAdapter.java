@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.lr.test.R;
-import com.example.lr.test.bean.Message;
+import com.example.lr.test.entity.Message;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -136,6 +137,12 @@ public class ConversionAdapter extends RecyclerView.Adapter {
 
     public void addData(Message text) {
         this.conversion.add(text);
+        notifyDataSetChanged();
+    }
+
+    public void addDataList(List<Message> messageList) {
+        this.conversion.clear();
+        this.conversion.addAll(messageList);
         notifyDataSetChanged();
     }
 
