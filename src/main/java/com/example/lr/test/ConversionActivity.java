@@ -17,7 +17,6 @@ import android.widget.ScrollView;
 import com.example.lr.test.adapter.ConversionAdapter;
 import com.example.lr.test.app.MyTestApplication;
 import com.example.lr.test.entity.Message;
-import com.example.lr.test.model.db.DaoSession;
 import com.example.lr.test.model.db.MessageDao;
 import com.example.lr.test.util.ScreenUtil;
 import com.example.lr.test.widget.WrapContentLinearLayoutManager;
@@ -50,7 +49,6 @@ public class ConversionActivity extends AppCompatActivity {
     @BindView(R.id.MyConversition)
     LinearLayout myConversionsition;
 
-    DaoSession mDaoSession;
     MessageDao dao;
 
     public int bottomStatusHeight = 0;
@@ -99,11 +97,12 @@ public class ConversionActivity extends AppCompatActivity {
         list.setLayoutManager(mLayoutManager);
         list.setAdapter(mAdapter);
         bottomStatusHeight = ScreenUtil.getBottomStatusHeight(this);
-        controlKeyboardLayout(myConversionsition,srl);
         List<Message> messageList = dao.loadAll();
         if (messageList != null) {
             mAdapter.addDataList(messageList);
         }
+        controlKeyboardLayout(myConversionsition,srl);
+        mAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.send)
@@ -114,9 +113,10 @@ public class ConversionActivity extends AppCompatActivity {
         etText.getText().clear();
         etText.setHint("please write here");
         list.scrollToPosition(mConversionList.size() - 1);
-        hideSoftKeyboard();
-
+        srl.setSmoothScrollingEnabled(true);
+//        hideSoftKeyboard();
     }
+
 
     /**
      * @param root             最外层布局
@@ -127,6 +127,9 @@ public class ConversionActivity extends AppCompatActivity {
             private Rect r = new Rect();
             @Override
             public void onGlobalLayout() {
+//                DisplayMetrics displayMetrics = new DisplayMetrics();
+//                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//                int dpi = displayMetrics.densityDpi;
                 //获取当前界面可视部分
                 ConversionActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
                 //获取屏幕的高度
@@ -138,17 +141,20 @@ public class ConversionActivity extends AppCompatActivity {
                     recyclerHeight = mLayoutManager.getRecyclerHeight();
                 }
                 if (heightDifference == bottomStatusHeight) {
-                    needToScrollView.scrollTo(0, bottomStatusHeight);
+                    needToScrollView.scrollTo(0, 480);
+//                    list.scrollToPosition(mConversionList.size() - 1);
                 } else {
                     if (heightDifference < recyclerHeight) {
-                        int contentHeight = mLayoutManager == null ? 0 : mLayoutManager.getHeight();
-                        if (recyclerHeight < contentHeight) {
-                            listSlideHeight = heightDifference - (contentHeight - recyclerHeight);
-                            needToScrollView.scrollTo(0, listSlideHeight);
-                        } else {
+//                        int contentHeight = mLayoutManager == null ? 0 : mLayoutManager.getHeight();
+//                        if (recyclerHeight < contentHeight) {
+//                            Log.e("leary2222", "recyclerHeight===>" + recyclerHeight/screenHeight + "  contentHeight===>" + contentHeight);
+//                            listSlideHeight = heightDifference - (contentHeight - recyclerHeight);
+//                            Log.e("leary2222", "listSlide===>" + listSlideHeight);
+//                            needToScrollView.scrollTo(0, listSlideHeight);
+//                        } else {
                             listSlideHeight = heightDifference;
                             needToScrollView.scrollTo(0, listSlideHeight);
-                        }
+//                        }
                     } else {
                         listSlideHeight = 0;
                     }
