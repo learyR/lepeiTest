@@ -24,6 +24,9 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.lr.test.app.MyTestApplication;
+import com.example.lr.test.entity.User;
+import com.example.lr.test.model.db.UserDao;
 import com.example.lr.test.view.CircleImageView;
 
 import java.io.File;
@@ -56,15 +59,38 @@ public class PersonalActivity extends AppCompatActivity {
     @BindView(R.id.text_userName)
     TextView textUserName;
 
+    UserDao dao;
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal);
         ButterKnife.bind(this);
-        textUserName.setText("leary");
-        textUserNick.setText("乐陪");
+        dao = MyTestApplication.getInstance().getDaoSession().getUserDao();
         //创建拍照存储的临时文件
         createCameraTempFile(savedInstanceState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserInfo();
+    }
+
+    private void loadUserInfo() {
+        User leary = dao.queryBuilder().where(UserDao.Properties.UserName.eq("leary")).build().unique();
+        if (leary != null) {
+            textUserName.setText(leary.getUserName());
+            textUserNick.setText(leary.getUserNick());
+            headImage1.setImageBitmap(BitmapFactory.decodeFile(leary.getAvatarUri()));
+        }
+//        List<User> users = dao.loadAll();
+//        if (users.size() > 0 && users.get(0) != null) {
+//            textUserName.setText(users.get(0).getUserName());
+//            textUserNick.setText(users.get(0).getUserNick());
+//            headImage1.setImageBitmap(BitmapFactory.decodeFile(users.get(0).getAvatarUri()));
+//        }
     }
 
     @OnClick(R.id.personalLayout)
@@ -231,8 +257,23 @@ public class PersonalActivity extends AppCompatActivity {
                         return;
                     }
                     String cropImagePath = getRealFilePathFromUri(getApplicationContext(), uri);
+                    User leary = dao.queryBuilder().where(UserDao.Properties.UserName.eq("leary")).build().unique();
+                    if (leary != null) {
+                        leary.setAvatarUri(cropImagePath);
+                        leary.setUserName("jack");
+                        leary.setUserNick("hii");
+                        dao.update(leary);
+                    } else {
+                        user = new User();
+                        user.setUserName("leary");
+                        user.setUserNick("Hello");
+                        user.setAvatarUri(cropImagePath);
+                        dao.insert(user);
+                    }
                     Bitmap bitMap = BitmapFactory.decodeFile(cropImagePath);
                     headImage1.setImageBitmap(bitMap);
+                    textUserName.setText(user.getUserName());
+                    textUserNick.setText(user.getUserNick());
                     //此处后面可以将bitMap转为二进制上传后台网络
                     //......
 

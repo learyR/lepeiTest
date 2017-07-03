@@ -16,9 +16,9 @@ import android.widget.ScrollView;
 
 import com.example.lr.test.adapter.ConversionAdapter;
 import com.example.lr.test.app.MyTestApplication;
-import com.example.lr.test.entity.DaoSession;
 import com.example.lr.test.entity.Message;
-import com.example.lr.test.entity.MessageDao;
+import com.example.lr.test.model.db.DaoSession;
+import com.example.lr.test.model.db.MessageDao;
 import com.example.lr.test.util.ScreenUtil;
 import com.example.lr.test.widget.WrapContentLinearLayoutManager;
 
@@ -90,7 +90,7 @@ public class ConversionActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        dao = MyTestApplication.getDaoSession().getMessageDao();
+        dao = MyTestApplication.getInstance().getDaoSession().getMessageDao();
         inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         mConversionList = new ArrayList<>();
         mAdapter = new ConversionAdapter(mConversionList, this);

@@ -2,8 +2,8 @@ package com.example.lr.test.app;
 
 import android.app.Application;
 
-import com.example.lr.test.entity.DaoMaster;
-import com.example.lr.test.entity.DaoSession;
+import com.example.lr.test.model.db.DaoMaster;
+import com.example.lr.test.model.db.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -12,22 +12,45 @@ import org.greenrobot.greendao.database.Database;
  */
 
 public class MyTestApplication extends Application {
-    private static MyTestApplication instance;
-    private static DaoSession daoSession;
+    private DaoMaster.DevOpenHelper mHelper;
+    private Database db;
+    private DaoMaster mDaoMaster;
+    private DaoSession mDaoSession;
+    public static MyTestApplication instance;
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "Conversition.db");
-        Database database = helper.getWritableDb();
-        DaoMaster master = new DaoMaster(database);
-        daoSession = master.newSession();
+        createConversitionDB();
+        createUserDB();
     }
-    public static MyTestApplication getInstance(){
+
+    public static MyTestApplication getInstance() {
+        if (instance == null) {
+            synchronized (instance) {
+                if (instance == null) {
+                    instance = new MyTestApplication();
+                }
+            }
+        }
         return instance;
     }
 
-    public static DaoSession getDaoSession() {
-        return daoSession;
+    private void createUserDB() {
+        mHelper = new DaoMaster.DevOpenHelper(this, "User.db");
+        db = mHelper.getWritableDb();
+        mDaoMaster = new DaoMaster(db);
+        mDaoSession = mDaoMaster.newSession();
+    }
+
+
+    private void createConversitionDB(){
+        mHelper = new DaoMaster.DevOpenHelper(this, "Conversition.db");
+        db = mHelper.getWritableDb();
+        mDaoMaster = new DaoMaster(db);
+        mDaoSession = mDaoMaster.newSession();
+    }
+    public  DaoSession getDaoSession() {
+        return mDaoSession;
     }
 }
